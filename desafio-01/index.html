@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Desafío 01</title>
+    <link rel="stylesheet" type="text/css" href="../estilo.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <meta charset="utf-8">
+    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    canvas {
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="../index.html">Inicio</a>
+        <a href="#" class="actual">D1 - Revista UTE</a>
+        <a href="../desafio-02/index.html">D2 - ICVU 2019</a>
+        <a href="../desafio-03/index.html">D3 - PSU/NEM</a>
+        <a href="../desafio-04/index.html">D4 - DESEMPLEO</a>
+        <a href="../desafio-05/index.html">D5 - CALENTAMIENTO GLOBAL</a>
+    </nav>
+</body>
+<script>
+var data;
+var cont = 0;
+var factor;
+var fijos = {
+    "Entradas": ['Educativa', 'Política-Ideológica', 'Económica-Productiva', 'Cientíca-Tecnológica', 'Cultural', 'Territorial-Cono Sur'],
+    "Indole": ['UTE', 'Nacional', 'Latinoamérica', 'Internacional'],
+    "tipoArticulo": ['Editorial', 'Ensayo', 'Documentos', 'Notas Bibliográficas', 'Crónica Universitaria']
+}
+
+function preload() {
+    data = loadJSON('https://api.myjson.com/bins/rqk3r');
+    console.log(data);
+    console.log(fijos);
+
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    selector = createSelect();
+    selector.position(width - 150, 20);
+    selector.option('Entradas', 0);
+    selector.option('Índole', 1);
+    selector.option('Tipo de artículo', 2);
+    selector.changed(elCambio);
+    //constantes();
+    noLoop();
+
+    for (var x = 0; x < 12; x++) {
+        textAlign(CENTER);
+        textSize(12);
+        text(data[x].revista, 250 + (x * 125), height - 400, 150);
+        textSize(9);
+        text(data[x].fecha, 250 + (x * 125), height - 380, 150);
+        img = createImg(data[x].foto);
+        img.hide();
+        image(img, 270 + (x * 125), height - 300, 100, 150);
+
+
+    }
+
+
+
+}
+
+function draw() {
+    var opcion = selector.value();
+    textStyle(BOLD);
+    textSize(20);
+    textAlign(LEFT);
+    noStroke();
+
+
+
+    if (opcion == 0) {
+        fill(0, 0, 0);
+        text('Entradas', 100, 100);
+        textStyle(NORMAL);
+        textSize(12);
+        for (var i = 0; i < 6; i++) {
+            text(fijos.Entradas[i], 100, 180 + (40 * i), 120);
+        }
+        fill(200, 0, 0);
+        for (var k = 0; k < 12; k++) {
+
+            for (var i = 0; i < 6; i++) {
+                console.log(data[k].entradas[i]);
+                rect(280 + (125 * k), 180 + (40 * i), (data[k].entradas[i]) * 10, 25);
+                text(data[k].entradas[i], 285 + (125 * k) + (data[k].entradas[i]) * 10, 195 + (40 * i));
+
+
+            }
+        }
+
+
+    } else if (opcion == 1) {
+        fill(0, 0, 0);
+        text('Índole', 100, 100);
+        textStyle(NORMAL);
+        textSize(12);
+        for (var i = 0; i < 6; i++) {
+            text(fijos.Indole[i], 100, 180 + (40 * i));
+        }
+        fill(200, 0, 0);
+        for (var k = 0; k < 12; k++) {
+            for (var i = 0; i < 6; i++) {
+                console.log(data[k].indole[i]);
+                rect(280 + (125 * k), 165 + (40 * i), (data[k].indole[i]) * 10, 25);
+                text(data[k].indole[i], 285 + (125 * k) + (data[k].indole[i]) * 10, 185 + (40 * i));
+
+            }
+        }
+
+    } else {
+        fill(0, 0, 0);
+        text('Tipo de Artículo', 100, 100);
+        textStyle(NORMAL);
+        textSize(12);
+        for (var i = 0; i < 5; i++) {
+            text(fijos.tipoArticulo[i], 100, 180 + (40 * i));
+        }
+        fill(200, 0, 0);
+        for (var k = 0; k < 12; k++) {
+            for (var i = 0; i < 6; i++) {
+                console.log(data[k].tipo[i]);
+                rect(270 + (125 * k), 165 + (40 * i), (data[k].tipo[i]) * 10, 25);
+                text(data[k].tipo[i], 285 + (125 * k) + (data[k].tipo[i]) * 10, 185 + (40 * i));
+
+            }
+        }
+    }
+
+
+
+
+
+
+}
+
+
+function elCambio() {
+    clear();
+    redraw();
+    fill(0, 0, 0);
+    for (var x = 0; x < 12; x++) {
+        textAlign(CENTER);
+        textSize(12);
+        text(data[x].revista, 250 + (x * 125), height - 400, 150);
+        textSize(9);
+        text(data[x].fecha, 250 + (x * 125), height - 380, 150);
+        img = createImg(data[x].foto);
+        img.hide();
+        image(img, 280 + (x * 125), height - 300, 100, 150);
+
+    }
+}
+</script>
+
+</html>
